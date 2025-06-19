@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Price Scraper - Comparação de Preços</title>
+    <link rel="stylesheet" href="../css/main.css" />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%232563EB'%3E%3Cpath d='M12 2L2 7v10c0 5.55 3.84 9.74 9 11 5.16-1.26 9-5.45 9-11V7l-10-5z'/%3E%3C/svg%3E" />
+<script type="module" src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Fpricescra9970back.builtwithrocket.new&_be=https%3A%2F%2Fapplication.rocket.new&_v=0.1.5"></script>
+</head>
+<body class="bg-background text-text-primary min-h-screen">
+    <!-- Header -->
+    <header class="bg-surface border-b border-border sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3">
+                    <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+                        <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2L2 7v10c0 5.55 3.84 9.74 9 11 5.16-1.26 9-5.45 9-11V7l-10-5z"/>
+                        </svg>
+                    </div>
+                    <h1 class="text-xl font-bold text-text-primary">Price Scraper</h1>
+                </div>
+
+                <!-- Navigation -->
+                <nav class="hidden md:flex items-center space-x-6">
+                    <a href="price_comparison_dashboard.html" class="text-primary font-medium">Dashboard</a>
+                    <a href="results_display_interface.html" class="text-text-secondary hover:text-text-primary transition-smooth">Resultados</a>
+                    <a href="export_and_data_management.html" class="text-text-secondary hover:text-text-primary transition-smooth">Exportar</a>
+                </nav>
+
+                <!-- Theme Toggle & Language -->
+                <div class="flex items-center space-x-4">
+                    <span class="text-xs text-text-secondary bg-surface-light px-2 py-1 rounded">pt-BR</span>
+                    <button id="themeToggle" class="p-2 rounded-lg bg-surface-light hover:bg-surface transition-smooth">
+                        <svg id="darkIcon" class="w-5 h-5 text-text-secondary" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                        </svg>
+                        <svg id="lightIcon" class="w-5 h-5 text-text-secondary hidden" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2v2m0 16v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M2 12h2m16 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Page Title -->
+        <div class="mb-8">
+            <h2 class="text-3xl font-bold text-text-primary mb-2">Comparação de Preços</h2>
+            <p class="text-text-secondary">Compare preços automaticamente em supermercados brasileiros</p>
+        </div>
+
+        <!-- Main Grid Layout -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Product List Section -->
+            <div class="space-y-6">
+                <div class="card p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-semibold text-text-primary">Lista de Produtos</h3>
+                        <button id="clearProducts" class="text-sm text-text-secondary hover:text-error transition-smooth">
+                            Limpar Lista
+                        </button>
+                    </div>
+                    <textarea id="productList" class="input min-h-[300px] resize-none font-mono text-sm" placeholder="Digite os produtos, um por linha...">Arroz branco 5kg
+Feijão preto 1kg
+Óleo de soja 900ml
+Açúcar cristal 1kg
+Sal refinado 1kg
+Farinha de trigo 1kg
+Macarrão espaguete 500g
+Leite integral 1L
+Ovos brancos 12 unidades
+Frango inteiro congelado
+Carne bovina alcatra 1kg
+Peixe tilápia filé 1kg
+Banana prata 1kg
+Maçã gala 1kg
+Tomate 1kg
+Cebola 1kg
+Batata inglesa 1kg
+Cenoura 1kg
+Alface americana
+Pão de forma integral
+Margarina 500g
+Café em pó 500g
+Açúcar mascavo 1kg
+Iogurte natural 170g
+Queijo mussarela fatiado 200g</textarea>
+                    <div class="mt-2 text-xs text-text-secondary">
+                        <span id="productCount">25</span> produtos na lista
+                    </div>
+                </div>
+
+                <!-- Supermarket URLs Section -->
+                <div class="card p-6">
+                    <h3 class="text-lg font-semibold text-text-primary mb-4">URLs dos Supermercados</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-text-secondary mb-2">Carrefour</label>
+                            <input type="url" id="carrefourUrl" class="input" placeholder="https://www.carrefour.com.br" value="https://www.carrefour.com.br" />
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-text-secondary mb-2">Pão de Açúcar</label>
+                            <input type="url" id="paodeacucarUrl" class="input" placeholder="https://www.paodeacucar.com" value="https://www.paodeacucar.com" />
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-text-secondary mb-2">Atacadão</label>
+                            <input type="url" id="atacadaoUrl" class="input" placeholder="https://www.atacadao.com.br" value="https://www.atacadao.com.br" />
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-text-secondary mb-2">Extra (Opcional)</label>
+                            <input type="url" id="extraUrl" class="input" placeholder="https://www.extra.com.br" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Search Controls & Results Section -->
+            <div class="space-y-6">
+                <!-- Search Button -->
+                <div class="card p-6">
+                    <button id="searchPrices" class="btn-primary w-full h-14 text-lg font-semibold relative overflow-hidden">
+                        <span id="searchText">🔍 Buscar Preços</span>
+                        <div id="loadingSpinner" class="hidden absolute inset-0 flex items-center justify-center">
+                            <div class="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                            <span class="ml-2">Buscando...</span>
+                        </div>
+                    </button>
+                    <div class="mt-4 text-center">
+                        <p class="text-sm text-text-secondary">
+                            Clique para iniciar a busca automática de preços
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Warning Messages -->
+                <div id="warningMessages" class="hidden">
+                    <div class="bg-warning-100 border border-warning-500 rounded-lg p-4">
+                        <div class="flex items-start">
+                            <svg class="w-5 h-5 text-warning-600 mt-0.5 mr-3" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2L1 21h22L12 2zm0 3.5L19.5 19h-15L12 5.5zM11 10v4h2v-4h-2zm0 6v2h2v-2h-2z"/>
+                            </svg>
+                            <div>
+                                <h4 class="text-sm font-medium text-warning-800">Atenção</h4>
+                                <div id="warningContent" class="mt-1 text-sm text-warning-700">
+                                    <!-- Warning messages will be inserted here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Results Preview -->
+                <div id="resultsPreview" class="hidden card p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-semibold text-text-primary">Resultados Rápidos</h3>
+                        <a href="results_display_interface.html" class="text-sm text-primary hover:text-primary-700 transition-smooth">
+                            Ver Todos →
+                        </a>
+                    </div>
+                    <div id="previewContent" class="space-y-3">
+                        <!-- Preview results will be inserted here -->
+                    </div>
+                </div>
+
+                <!-- Search Statistics -->
+                <div id="searchStats" class="hidden card p-6">
+                    <h3 class="text-lg font-semibold text-text-primary mb-4">Estatísticas da Busca</h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="text-center">
+                            <div id="totalProducts" class="text-2xl font-bold text-primary">0</div>
+                            <div class="text-sm text-text-secondary">Produtos</div>
+                        </div>
+                        <div class="text-center">
+                            <div id="totalPrices" class="text-2xl font-bold text-success">0</div>
+                            <div class="text-sm text-text-secondary">Preços Encontrados</div>
+                        </div>
+                        <div class="text-center">
+                            <div id="avgPrice" class="text-2xl font-bold text-accent">R$ 0,00</div>
+                            <div class="text-sm text-text-secondary">Preço Médio</div>
+                        </div>
+                        <div class="text-center">
+                            <div id="searchTime" class="text-2xl font-bold text-secondary">0s</div>
+                            <div class="text-sm text-text-secondary">Tempo de Busca</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Searches -->
+        <div class="mt-12">
+            <div class="card p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold text-text-primary">Buscas Recentes</h3>
+                    <button id="clearHistory" class="text-sm text-text-secondary hover:text-error transition-smooth">
+                        Limpar Histórico
+                    </button>
+                </div>
+                <div id="recentSearches" class="space-y-3">
+                    <div class="flex items-center justify-between p-3 bg-surface-light rounded-lg">
+                        <div>
+                            <div class="text-sm font-medium text-text-primary">Busca de produtos básicos</div>
+                            <div class="text-xs text-text-secondary">25 produtos • 3 supermercados • 15/01/2025</div>
+                        </div>
+                        <button class="text-primary hover:text-primary-700 text-sm transition-smooth">
+                            Repetir Busca
+                        </button>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-surface-light rounded-lg">
+                        <div>
+                            <div class="text-sm font-medium text-text-primary">Comparação de carnes</div>
+                            <div class="text-xs text-text-secondary">8 produtos • 4 supermercados • 14/01/2025</div>
+                        </div>
+                        <button class="text-primary hover:text-primary-700 text-sm transition-smooth">
+                            Repetir Busca
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Floating Export Button -->
+    <div class="fixed bottom-6 right-6 z-40">
+        <button id="exportButton" class="btn-accent w-14 h-14 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 disabled:opacity-50" title="Exportar para CSV" disabled>
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/>
+                <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Mobile Navigation -->
+    <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-surface border-t border-border z-50">
+        <div class="flex items-center justify-around py-2">
+            <a href="price_comparison_dashboard.html" class="flex flex-col items-center p-2 text-primary">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
+                </svg>
+                <span class="text-xs mt-1">Dashboard</span>
+            </a>
+            <a href="results_display_interface.html" class="flex flex-col items-center p-2 text-text-secondary">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/>
+                </svg>
+                <span class="text-xs mt-1">Resultados</span>
+            </a>
+            <a href="export_and_data_management.html" class="flex flex-col items-center p-2 text-text-secondary">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/>
+                    <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/>
+                </svg>
+                <span class="text-xs mt-1">Exportar</span>
+            </a>
+        </div>
+    </nav>
+
+    <script>
+        // Theme Toggle Functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const darkIcon = document.getElementById('darkIcon');
+        const lightIcon = document.getElementById('lightIcon');
+        
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+            darkIcon.classList.toggle('hidden');
+            lightIcon.classList.toggle('hidden');
+        });
+
+        // Product Counter
+        const productList = document.getElementById('productList');
+        const productCount = document.getElementById('productCount');
+        
+        function updateProductCount() {
+            const products = productList.value.trim().split('\n').filter(line => line.trim());
+            productCount.textContent = products.length;
+        }
+        
+        productList.addEventListener('input', updateProductCount);
+
+        // Search Functionality
+        const searchButton = document.getElementById('searchPrices');
+        const searchText = document.getElementById('searchText');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const warningMessages = document.getElementById('warningMessages');
+        const resultsPreview = document.getElementById('resultsPreview');
+        const searchStats = document.getElementById('searchStats');
+        const exportButton = document.getElementById('exportButton');
+
+        searchButton.addEventListener('click', async () => {
+            // Show loading state
+            searchText.classList.add('hidden');
+            loadingSpinner.classList.remove('hidden');
+            searchButton.disabled = true;
+            
+            // Hide previous results
+            warningMessages.classList.add('hidden');
+            resultsPreview.classList.add('hidden');
+            searchStats.classList.add('hidden');
+
+            // Simulate search process
+            const startTime = Date.now();
+            
+            try {
+                // Simulate API call delay
+                await new Promise(resolve => setTimeout(resolve, 3000));
+                
+                const endTime = Date.now();
+                const searchTime = Math.round((endTime - startTime) / 1000);
+                
+                // Mock results
+                const mockResults = {
+                    totalProducts: productList.value.trim().split('\n').filter(line => line.trim()).length,
+                    totalPrices: Math.floor(Math.random() * 200) + 50,
+                    avgPrice: (Math.random() * 50 + 10).toFixed(2),
+                    searchTime: searchTime
+                };
+
+                // Show results
+                document.getElementById('totalProducts').textContent = mockResults.totalProducts;
+                document.getElementById('totalPrices').textContent = mockResults.totalPrices;
+                document.getElementById('avgPrice').textContent = `R$ ${mockResults.avgPrice.replace('.', ',')}`;
+                document.getElementById('searchTime').textContent = `${mockResults.searchTime}s`;
+                
+                searchStats.classList.remove('hidden');
+                resultsPreview.classList.remove('hidden');
+                exportButton.disabled = false;
+
+                // Show some warnings
+                if (Math.random() > 0.5) {
+                    document.getElementById('warningContent').innerHTML = `
+                        <p>Alguns produtos encontraram menos de 50 preços:</p>
+                        <ul class="mt-1 list-disc list-inside">
+                            <li>Peixe tilápia filé 1kg - 23 preços encontrados</li>
+                            <li>Açúcar mascavo 1kg - 31 preços encontrados</li>
+                        </ul>
+                    `;
+                    warningMessages.classList.remove('hidden');
+                }
+
+                // Mock preview results
+                document.getElementById('previewContent').innerHTML = `
+                    <div class="flex justify-between items-center p-3 bg-surface-light rounded">
+                        <div>
+                            <div class="font-medium text-text-primary">Arroz branco 5kg</div>
+                            <div class="text-sm text-text-secondary">Carrefour</div>
+                        </div>
+                        <div class="text-right">
+                            <div class="font-bold text-success">R$ 18,90</div>
+                            <div class="text-xs text-text-secondary">Melhor preço</div>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center p-3 bg-surface-light rounded">
+                        <div>
+                            <div class="font-medium text-text-primary">Feijão preto 1kg</div>
+                            <div class="text-sm text-text-secondary">Atacadão</div>
+                        </div>
+                        <div class="text-right">
+                            <div class="font-bold text-success">R$ 7,45</div>
+                            <div class="text-xs text-text-secondary">Melhor preço</div>
+                        </div>
+                    </div>
+                `;
+
+            } catch (error) {
+                console.error('Search failed:', error);
+                // Show error message
+            } finally {
+                // Reset button state
+                searchText.classList.remove('hidden');
+                loadingSpinner.classList.add('hidden');
+                searchButton.disabled = false;
+            }
+        });
+
+        // Export functionality
+        exportButton.addEventListener('click', () => {
+            const today = new Date();
+            const filename = `precos-${today.getDate().toString().padStart(2, '0')}-${(today.getMonth() + 1).toString().padStart(2, '0')}-${today.getFullYear()}.csv`;
+            
+            // Mock CSV data
+            const csvContent = `Nome do Produto,Preço,Nome do Supermercado,URL da Página,Data de Coleta
+Arroz branco 5kg,R$ 18.90,Carrefour,https://www.carrefour.com.br/produto/123,${today.toLocaleDateString('pt-BR')}
+Feijão preto 1kg,R$ 7.45,Atacadão,https://www.atacadao.com.br/produto/456,${today.toLocaleDateString('pt-BR')}`;
+            
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download', filename);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
+
+        // Clear functions
+        document.getElementById('clearProducts').addEventListener('click', () => {
+            productList.value = '';
+            updateProductCount();
+        });
+
+        document.getElementById('clearHistory').addEventListener('click', () => {
+            document.getElementById('recentSearches').innerHTML = '<p class="text-text-secondary text-center py-4">Nenhuma busca recente</p>';
+        });
+
+        // Initialize
+        updateProductCount();
+    </script>
+</body>
+</html>

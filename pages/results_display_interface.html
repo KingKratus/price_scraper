@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Price Scraper - Resultados da Busca</title>
+    <link rel="stylesheet" href="../css/main.css" />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%232563EB'%3E%3Cpath d='M12 2L2 7v10c0 5.55 3.84 9.74 9 11 5.16-1.26 9-5.45 9-11V7l-10-5z'/%3E%3C/svg%3E" />
+<script type="module" src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Fpricescra9970back.builtwithrocket.new&_be=https%3A%2F%2Fapplication.rocket.new&_v=0.1.5"></script>
+</head>
+<body class="bg-background text-text-primary min-h-screen">
+    <!-- Header -->
+    <header class="bg-surface border-b border-border sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3">
+                    <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+                        <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2L2 7v10c0 5.55 3.84 9.74 9 11 5.16-1.26 9-5.45 9-11V7l-10-5z"/>
+                        </svg>
+                    </div>
+                    <h1 class="text-xl font-bold text-text-primary">Price Scraper</h1>
+                </div>
+
+                <!-- Navigation -->
+                <nav class="hidden md:flex items-center space-x-6">
+                    <a href="price_comparison_dashboard.html" class="text-text-secondary hover:text-text-primary transition-smooth">Dashboard</a>
+                    <a href="results_display_interface.html" class="text-primary font-medium">Resultados</a>
+                    <a href="export_and_data_management.html" class="text-text-secondary hover:text-text-primary transition-smooth">Exportar</a>
+                </nav>
+
+                <!-- Theme Toggle & Language -->
+                <div class="flex items-center space-x-4">
+                    <span class="text-xs text-text-secondary bg-surface-light px-2 py-1 rounded">pt-BR</span>
+                    <button id="themeToggle" class="p-2 rounded-lg bg-surface-light hover:bg-surface transition-smooth">
+                        <svg id="darkIcon" class="w-5 h-5 text-text-secondary" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                        </svg>
+                        <svg id="lightIcon" class="w-5 h-5 text-text-secondary hidden" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2v2m0 16v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M2 12h2m16 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Page Header -->
+        <div class="mb-8">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                    <h2 class="text-3xl font-bold text-text-primary mb-2">Resultados da Busca</h2>
+                    <p class="text-text-secondary">Comparação de preços encontrados nos supermercados</p>
+                </div>
+                <div class="mt-4 sm:mt-0 flex items-center space-x-3">
+                    <span class="text-sm text-text-secondary">Última busca: 15/01/2025 14:32</span>
+                    <button id="refreshResults" class="btn-outline px-4 py-2">
+                        <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                        </svg>
+                        Atualizar
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search Summary -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            <div class="card p-4">
+                <div class="flex items-center">
+                    <div class="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center mr-3">
+                        <svg class="w-5 h-5 text-primary" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="text-2xl font-bold text-text-primary">25</div>
+                        <div class="text-sm text-text-secondary">Produtos Buscados</div>
+                    </div>
+                </div>
+            </div>
+            <div class="card p-4">
+                <div class="flex items-center">
+                    <div class="w-10 h-10 bg-success-100 rounded-lg flex items-center justify-center mr-3">
+                        <svg class="w-5 h-5 text-success" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="text-2xl font-bold text-text-primary">187</div>
+                        <div class="text-sm text-text-secondary">Preços Encontrados</div>
+                    </div>
+                </div>
+            </div>
+            <div class="card p-4">
+                <div class="flex items-center">
+                    <div class="w-10 h-10 bg-accent-100 rounded-lg flex items-center justify-center mr-3">
+                        <svg class="w-5 h-5 text-accent" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="text-2xl font-bold text-text-primary">R$ 24,50</div>
+                        <div class="text-sm text-text-secondary">Preço Médio</div>
+                    </div>
+                </div>
+            </div>
+            <div class="card p-4">
+                <div class="flex items-center">
+                    <div class="w-10 h-10 bg-secondary-100 rounded-lg flex items-center justify-center mr-3">
+                        <svg class="w-5 h-5 text-secondary" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="text-2xl font-bold text-text-primary">3</div>
+                        <div class="text-sm text-text-secondary">Supermercados</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter Controls -->
+        <div class="card p-6 mb-8">
+            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
+                <div class="flex flex-wrap items-center gap-3">
+                    <span class="text-sm font-medium text-text-primary">Filtrar por:</span>
+                    <div class="flex flex-wrap gap-2">
+                        <button class="filter-chip active" data-filter="all">Todos</button>
+                        <button class="filter-chip" data-filter="carrefour">Carrefour</button>
+                        <button class="filter-chip" data-filter="paodeacucar">Pão de Açúcar</button>
+                        <button class="filter-chip" data-filter="atacadao">Atacadão</button>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="flex items-center space-x-2">
+                        <label class="text-sm text-text-secondary">Visualização:</label>
+                        <button id="cardView" class="p-2 rounded bg-primary text-white">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
+                            </svg>
+                        </button>
+                        <button id="tableView" class="p-2 rounded bg-surface-light text-text-secondary">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M3 3h18v18H3V3zm16 16V5H5v14h14zM7 7h2v2H7V7zm4 0h2v2h-2V7zm4 0h2v2h-2V7zM7 11h2v2H7v-2zm4 0h2v2h-2v-2zm4 0h2v2h-2v-2zM7 15h2v2H7v-2zm4 0h2v2h-2v-2zm4 0h2v2h-2v-2z"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <select id="sortBy" class="input text-sm">
+                        <option value="name">Nome do Produto</option>
+                        <option value="price">Menor Preço</option>
+                        <option value="store">Supermercado</option>
+                        <option value="date">Data de Coleta</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Content -->
+        <div id="resultsContent">
+            <!-- Card View (Default) -->
+            <div id="cardViewContent" class="space-y-8">
+                <!-- Carrefour Section -->
+                <div class="supermarket-section" data-store="carrefour">
+                    <div class="card">
+                        <div class="supermarket-header p-6 border-b border-border cursor-pointer" onclick="toggleSection('carrefour')">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-4">
+                                    <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Carrefour" class="w-12 h-12 rounded-lg object-cover" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                                    <div>
+                                        <h3 class="text-lg font-semibold text-text-primary">Carrefour</h3>
+                                        <p class="text-sm text-text-secondary">68 produtos encontrados • R$ 15,90 - R$ 89,90</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                    <span class="text-sm text-success bg-success-100 px-2 py-1 rounded">Online</span>
+                                    <svg id="carrefourChevron" class="w-5 h-5 text-text-secondary transform transition-transform" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M19 9l-7 7-7-7"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="carrefourContent" class="p-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                <!-- Product Cards -->
+                                <div class="product-card bg-surface-light rounded-lg p-4 hover:bg-surface transition-smooth">
+                                    <div class="flex justify-between items-start mb-3">
+                                        <h4 class="font-medium text-text-primary text-sm">Arroz branco 5kg</h4>
+                                        <span class="text-lg font-bold text-success">R$ 18,90</span>
+                                    </div>
+                                    <div class="text-xs text-text-secondary space-y-1">
+                                        <p>Coletado: 15/01/2025 14:30</p>
+                                        <a href="#" class="text-primary hover:text-primary-700 transition-smooth block truncate">
+                                            Ver no site →
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="product-card bg-surface-light rounded-lg p-4 hover:bg-surface transition-smooth">
+                                    <div class="flex justify-between items-start mb-3">
+                                        <h4 class="font-medium text-text-primary text-sm">Feijão preto 1kg</h4>
+                                        <span class="text-lg font-bold text-success">R$ 8,45</span>
+                                    </div>
+                                    <div class="text-xs text-text-secondary space-y-1">
+                                        <p>Coletado: 15/01/2025 14:30</p>
+                                        <a href="#" class="text-primary hover:text-primary-700 transition-smooth block truncate">
+                                            Ver no site →
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="product-card bg-surface-light rounded-lg p-4 hover:bg-surface transition-smooth">
+                                    <div class="flex justify-between items-start mb-3">
+                                        <h4 class="font-medium text-text-primary text-sm">Óleo de soja 900ml</h4>
+                                        <span class="text-lg font-bold text-success">R$ 7,99</span>
+                                    </div>
+                                    <div class="text-xs text-text-secondary space-y-1">
+                                        <p>Coletado: 15/01/2025 14:30</p>
+                                        <a href="#" class="text-primary hover:text-primary-700 transition-smooth block truncate">
+                                            Ver no site →
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="product-card bg-surface-light rounded-lg p-4 hover:bg-surface transition-smooth">
+                                    <div class="flex justify-between items-start mb-3">
+                                        <h4 class="font-medium text-text-primary text-sm">Açúcar cristal 1kg</h4>
+                                        <span class="text-lg font-bold text-success">R$ 4,89</span>
+                                    </div>
+                                    <div class="text-xs text-text-secondary space-y-1">
+                                        <p>Coletado: 15/01/2025 14:30</p>
+                                        <a href="#" class="text-primary hover:text-primary-700 transition-smooth block truncate">
+                                            Ver no site →
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="product-card bg-surface-light rounded-lg p-4 hover:bg-surface transition-smooth">
+                                    <div class="flex justify-between items-start mb-3">
+                                        <h4 class="font-medium text-text-primary text-sm">Leite integral 1L</h4>
+                                        <span class="text-lg font-bold text-success">R$ 5,49</span>
+                                    </div>
+                                    <div class="text-xs text-text-secondary space-y-1">
+                                        <p>Coletado: 15/01/2025 14:30</p>
+                                        <a href="#" class="text-primary hover:text-primary-700 transition-smooth block truncate">
+                                            Ver no site →
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="product-card bg-surface-light rounded-lg p-4 hover:bg-surface transition-smooth">
+                                    <div class="flex justify-between items-start mb-3">
+                                        <h4 class="font-medium text-text-primary text-sm">Frango inteiro congelado</h4>
+                                        <span class="text-lg font-bold text-success">R$ 12,90</span>
+                                    </div>
+                                    <div class="text-xs text-text-secondary space-y-1">
+                                        <p>Coletado: 15/01/2025 14:30</p>
+                                        <a href="#" class="text-primary hover:text-primary-700 transition-smooth block truncate">
+                                            Ver no site →
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-4 text-center">
+                                <button class="text-primary hover:text-primary-700 text-sm transition-smooth">
+                                    Ver todos os 68 produtos →
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pão de Açúcar Section -->
+                <div class="supermarket-section" data-store="paodeacucar">
+                    <div class="card">
+                        <div class="supermarket-header p-6 border-b border-border cursor-pointer" onclick="toggleSection('paodeacucar')">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-4">
+                                    <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Pão de Açúcar" class="w-12 h-12 rounded-lg object-cover" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                                    <div>
+                                        <h3 class="text-lg font-semibold text-text-primary">Pão de Açúcar</h3>
+                                        <p class="text-sm text-text-secondary">62 produtos encontrados • R$ 16,50 - R$ 95,90</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                    <span class="text-sm text-success bg-success-100 px-2 py-1 rounded">Online</span>
+                                    <svg id="paodeacucarChevron" class="w-5 h-5 text-text-secondary transform transition-transform rotate-180" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M19 9l-7 7-7-7"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="paodeacucarContent" class="p-6 hidden">
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                <!-- Product Cards -->
+                                <div class="product-card bg-surface-light rounded-lg p-4 hover:bg-surface transition-smooth">
+                                    <div class="flex justify-between items-start mb-3">
+                                        <h4 class="font-medium text-text-primary text-sm">Arroz branco 5kg</h4>
+                                        <span class="text-lg font-bold text-warning">R$ 21,90</span>
+                                    </div>
+                                    <div class="text-xs text-text-secondary space-y-1">
+                                        <p>Coletado: 15/01/2025 14:31</p>
+                                        <a href="#" class="text-primary hover:text-primary-700 transition-smooth block truncate">
+                                            Ver no site →
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="product-card bg-surface-light rounded-lg p-4 hover:bg-surface transition-smooth">
+                                    <div class="flex justify-between items-start mb-3">
+                                        <h4 class="font-medium text-text-primary text-sm">Feijão preto 1kg</h4>
+                                        <span class="text-lg font-bold text-warning">R$ 9,25</span>
+                                    </div>
+                                    <div class="text-xs text-text-secondary space-y-1">
+                                        <p>Coletado: 15/01/2025 14:31</p>
+                                        <a href="#" class="text-primary hover:text-primary-700 transition-smooth block truncate">
+                                            Ver no site →
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="product-card bg-surface-light rounded-lg p-4 hover:bg-surface transition-smooth">
+                                    <div class="flex justify-between items-start mb-3">
+                                        <h4 class="font-medium text-text-primary text-sm">Óleo de soja 900ml</h4>
+                                        <span class="text-lg font-bold text-warning">R$ 8,49</span>
+                                    </div>
+                                    <div class="text-xs text-text-secondary space-y-1">
+                                        <p>Coletado: 15/01/2025 14:31</p>
+                                        <a href="#" class="text-primary hover:text-primary-700 transition-smooth block truncate">
+                                            Ver no site →
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-4 text-center">
+                                <button class="text-primary hover:text-primary-700 text-sm transition-smooth">
+                                    Ver todos os 62 produtos →
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Atacadão Section -->
+                <div class="supermarket-section" data-store="atacadao">
+                    <div class="card">
+                        <div class="supermarket-header p-6 border-b border-border cursor-pointer" onclick="toggleSection('atacadao')">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-4">
+                                    <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Atacadão" class="w-12 h-12 rounded-lg object-cover" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                                    <div>
+                                        <h3 class="text-lg font-semibold text-text-primary">Atacadão</h3>
+                                        <p class="text-sm text-text-secondary">57 produtos encontrados • R$ 14,90 - R$ 78,90</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                    <span class="text-sm text-success bg-success-100 px-2 py-1 rounded">Online</span>
+                                    <svg id="atacadaoChevron" class="w-5 h-5 text-text-secondary transform transition-transform rotate-180" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M19 9l-7 7-7-7"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="atacadaoContent" class="p-6 hidden">
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                <!-- Product Cards -->
+                                <div class="product-card bg-surface-light rounded-lg p-4 hover:bg-surface transition-smooth">
+                                    <div class="flex justify-between items-start mb-3">
+                                        <h4 class="font-medium text-text-primary text-sm">Arroz branco 5kg</h4>
+                                        <span class="text-lg font-bold text-error">R$ 24,90</span>
+                                    </div>
+                                    <div class="text-xs text-text-secondary space-y-1">
+                                        <p>Coletado: 15/01/2025 14:32</p>
+                                        <a href="#" class="text-primary hover:text-primary-700 transition-smooth block truncate">
+                                            Ver no site →
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="product-card bg-surface-light rounded-lg p-4 hover:bg-surface transition-smooth">
+                                    <div class="flex justify-between items-start mb-3">
+                                        <h4 class="font-medium text-text-primary text-sm">Feijão preto 1kg</h4>
+                                        <span class="text-lg font-bold text-success">R$ 7,45</span>
+                                    </div>
+                                    <div class="text-xs text-text-secondary space-y-1">
+                                        <p>Coletado: 15/01/2025 14:32</p>
+                                        <a href="#" class="text-primary hover:text-primary-700 transition-smooth block truncate">
+                                            Ver no site →
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="product-card bg-surface-light rounded-lg p-4 hover:bg-surface transition-smooth">
+                                    <div class="flex justify-between items-start mb-3">
+                                        <h4 class="font-medium text-text-primary text-sm">Óleo de soja 900ml</h4>
+                                        <span class="text-lg font-bold text-success">R$ 7,29</span>
+                                    </div>
+                                    <div class="text-xs text-text-secondary space-y-1">
+                                        <p>Coletado: 15/01/2025 14:32</p>
+                                        <a href="#" class="text-primary hover:text-primary-700 transition-smooth block truncate">
+                                            Ver no site →
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-4 text-center">
+                                <button class="text-primary hover:text-primary-700 text-sm transition-smooth">
+                                    Ver todos os 57 produtos →
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Table View (Hidden by default) -->
+            <div id="tableViewContent" class="hidden">
+                <div class="card overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-surface-light">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-text-secondary uppercase tracking-wider cursor-pointer hover:text-text-primary" onclick="sortTable('product')">
+                                        Nome do Produto
+                                        <svg class="w-4 h-4 inline ml-1" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M7 10l5 5 5-5z"/>
+                                        </svg>
+                                    </th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-text-secondary uppercase tracking-wider cursor-pointer hover:text-text-primary" onclick="sortTable('price')">
+                                        Preço
+                                        <svg class="w-4 h-4 inline ml-1" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M7 10l5 5 5-5z"/>
+                                        </svg>
+                                    </th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-text-secondary uppercase tracking-wider cursor-pointer hover:text-text-primary" onclick="sortTable('store')">
+                                        Supermercado
+                                        <svg class="w-4 h-4 inline ml-1" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M7 10l5 5 5-5z"/>
+                                        </svg>
+                                    </th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-text-secondary uppercase tracking-wider cursor-pointer hover:text-text-primary" onclick="sortTable('date')">
+                                        Data de Coleta
+                                        <svg class="w-4 h-4 inline ml-1" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M7 10l5 5 5-5z"/>
+                                        </svg>
+                                    </th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-text-secondary uppercase tracking-wider">
+                                        Ações
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableBody" class="bg-surface divide-y divide-border">
+                                <tr class="hover:bg-surface-light transition-smooth">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-text-primary">Arroz branco 5kg</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-success font-bold">R$ 18,90</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-text-secondary">Carrefour</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-text-secondary">15/01/2025 14:30</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                        <a href="#" class="text-primary hover:text-primary-700 transition-smooth">Ver no site</a>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-surface-light transition-smooth">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-text-primary">Arroz branco 5kg</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-warning font-bold">R$ 21,90</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-text-secondary">Pão de Açúcar</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-text-secondary">15/01/2025 14:31</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                        <a href="#" class="text-primary hover:text-primary-700 transition-smooth">Ver no site</a>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-surface-light transition-smooth">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-text-primary">Arroz branco 5kg</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-error font-bold">R$ 24,90</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-text-secondary">Atacadão</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-text-secondary">15/01/2025 14:32</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                        <a href="#" class="text-primary hover:text-primary-700 transition-smooth">Ver no site</a>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-surface-light transition-smooth">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-text-primary">Feijão preto 1kg</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-success font-bold">R$ 7,45</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-text-secondary">Atacadão</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-text-secondary">15/01/2025 14:32</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                        <a href="#" class="text-primary hover:text-primary-700 transition-smooth">Ver no site</a>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-surface-light transition-smooth">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-text-primary">Feijão preto 1kg</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-warning font-bold">R$ 8,45</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-text-secondary">Carrefour</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-text-secondary">15/01/2025 14:30</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                        <a href="#" class="text-primary hover:text-primary-700 transition-smooth">Ver no site</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="px-6 py-3 bg-surface-light border-t border-border">
+                        <div class="flex items-center justify-between">
+                            <div class="text-sm text-text-secondary">
+                                Mostrando 1-5 de 187 resultados
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <button class="btn-outline px-3 py-1 text-sm" disabled>Anterior</button>
+                                <span class="px-3 py-1 text-sm bg-primary text-white rounded">1</span>
+                                <button class="btn-outline px-3 py-1 text-sm">2</button>
+                                <button class="btn-outline px-3 py-1 text-sm">3</button>
+                                <button class="btn-outline px-3 py-1 text-sm">Próximo</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Error States -->
+        <div id="errorStates" class="hidden space-y-4">
+            <div class="card p-6 border-error">
+                <div class="flex items-start">
+                    <svg class="w-6 h-6 text-error mt-1 mr-3" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                    </svg>
+                    <div>
+                        <h4 class="text-lg font-semibold text-error mb-2">Erro na Coleta - Extra</h4>
+                        <p class="text-text-secondary mb-4">Não foi possível acessar o site do Extra. O site pode estar fora do ar ou bloqueando requisições automatizadas.</p>
+                        <button class="btn-outline text-sm">
+                            <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                            </svg>
+                            Tentar Novamente
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Floating Export Button -->
+    <div class="fixed bottom-6 right-6 z-40">
+        <a href="export_and_data_management.html" class="btn-accent w-14 h-14 rounded-full shadow-lg hover:shadow-xl transition-all duration-200" title="Exportar Resultados">
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/>
+                <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/>
+            </svg>
+        </a>
+    </div>
+
+    <!-- Mobile Navigation -->
+    <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-surface border-t border-border z-50">
+        <div class="flex items-center justify-around py-2">
+            <a href="price_comparison_dashboard.html" class="flex flex-col items-center p-2 text-text-secondary">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
+                </svg>
+                <span class="text-xs mt-1">Dashboard</span>
+            </a>
+            <a href="results_display_interface.html" class="flex flex-col items-center p-2 text-primary">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/>
+                </svg>
+                <span class="text-xs mt-1">Resultados</span>
+            </a>
+            <a href="export_and_data_management.html" class="flex flex-col items-center p-2 text-text-secondary">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/>
+                    <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/>
+                </svg>
+                <span class="text-xs mt-1">Exportar</span>
+            </a>
+        </div>
+    </nav>
+
+    <style>
+        .filter-chip {
+            @apply px-3 py-1 text-sm rounded-full border border-border bg-surface text-text-secondary hover:bg-surface-light transition-smooth;
+        }
+        
+        .filter-chip.active {
+            @apply bg-primary text-white border-primary;
+        }
+        
+        .product-card {
+            border: 1px solid rgba(148, 163, 184, 0.1);
+        }
+        
+        .supermarket-header:hover {
+            @apply bg-surface-light;
+        }
+    </style>
+
+    <script>
+        // Theme Toggle Functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const darkIcon = document.getElementById('darkIcon');
+        const lightIcon = document.getElementById('lightIcon');
+        
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+            darkIcon.classList.toggle('hidden');
+            lightIcon.classList.toggle('hidden');
+        });
+
+        // Section Toggle Functionality
+        function toggleSection(sectionId) {
+            const content = document.getElementById(sectionId + 'Content');
+            const chevron = document.getElementById(sectionId + 'Chevron');
+            
+            content.classList.toggle('hidden');
+            chevron.classList.toggle('rotate-180');
+        }
+
+        // View Toggle Functionality
+        const cardViewBtn = document.getElementById('cardView');
+        const tableViewBtn = document.getElementById('tableView');
+        const cardViewContent = document.getElementById('cardViewContent');
+        const tableViewContent = document.getElementById('tableViewContent');
+
+        cardViewBtn.addEventListener('click', () => {
+            cardViewBtn.classList.add('bg-primary', 'text-white');
+            cardViewBtn.classList.remove('bg-surface-light', 'text-text-secondary');
+            tableViewBtn.classList.add('bg-surface-light', 'text-text-secondary');
+            tableViewBtn.classList.remove('bg-primary', 'text-white');
+            
+            cardViewContent.classList.remove('hidden');
+            tableViewContent.classList.add('hidden');
+        });
+
+        tableViewBtn.addEventListener('click', () => {
+            tableViewBtn.classList.add('bg-primary', 'text-white');
+            tableViewBtn.classList.remove('bg-surface-light', 'text-text-secondary');
+            cardViewBtn.classList.add('bg-surface-light', 'text-text-secondary');
+            cardViewBtn.classList.remove('bg-primary', 'text-white');
+            
+            tableViewContent.classList.remove('hidden');
+            cardViewContent.classList.add('hidden');
+        });
+
+        // Filter Functionality
+        const filterChips = document.querySelectorAll('.filter-chip');
+        const supermarketSections = document.querySelectorAll('.supermarket-section');
+
+        filterChips.forEach(chip => {
+            chip.addEventListener('click', () => {
+                // Remove active class from all chips
+                filterChips.forEach(c => c.classList.remove('active'));
+                // Add active class to clicked chip
+                chip.classList.add('active');
+                
+                const filter = chip.dataset.filter;
+                
+                // Show/hide sections based on filter
+                supermarketSections.forEach(section => {
+                    if (filter === 'all' || section.dataset.store === filter) {
+                        section.classList.remove('hidden');
+                    } else {
+                        section.classList.add('hidden');
+                    }
+                });
+            });
+        });
+
+        // Sort Functionality
+        const sortSelect = document.getElementById('sortBy');
+        sortSelect.addEventListener('change', () => {
+            const sortBy = sortSelect.value;
+            console.log('Sorting by:', sortBy);
+            // Implement sorting logic here
+        });
+
+        // Table Sort Functionality
+        function sortTable(column) {
+            console.log('Sorting table by:', column);
+            // Implement table sorting logic here
+        }
+
+        // Refresh Results
+        document.getElementById('refreshResults').addEventListener('click', () => {
+            location.reload();
+        });
+
+        // Initialize - Show first section expanded
+        document.addEventListener('DOMContentLoaded', () => {
+            // Carrefour section is already expanded by default
+        });
+    </script>
+</body>
+</html>

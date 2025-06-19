@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Price Scraper - Exportar e Gerenciar Dados</title>
+    <link rel="stylesheet" href="../css/main.css" />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%232563EB'%3E%3Cpath d='M12 2L2 7v10c0 5.55 3.84 9.74 9 11 5.16-1.26 9-5.45 9-11V7l-10-5z'/%3E%3C/svg%3E" />
+<script type="module" src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Fpricescra9970back.builtwithrocket.new&_be=https%3A%2F%2Fapplication.rocket.new&_v=0.1.5"></script>
+</head>
+<body class="bg-background text-text-primary min-h-screen">
+    <!-- Header -->
+    <header class="bg-surface border-b border-border sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3">
+                    <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+                        <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2L2 7v10c0 5.55 3.84 9.74 9 11 5.16-1.26 9-5.45 9-11V7l-10-5z"/>
+                        </svg>
+                    </div>
+                    <h1 class="text-xl font-bold text-text-primary">Price Scraper</h1>
+                </div>
+
+                <!-- Navigation -->
+                <nav class="hidden md:flex items-center space-x-6">
+                    <a href="price_comparison_dashboard.html" class="text-text-secondary hover:text-text-primary transition-smooth">Dashboard</a>
+                    <a href="results_display_interface.html" class="text-text-secondary hover:text-text-primary transition-smooth">Resultados</a>
+                    <a href="export_and_data_management.html" class="text-primary font-medium">Exportar</a>
+                </nav>
+
+                <!-- Theme Toggle & Language -->
+                <div class="flex items-center space-x-4">
+                    <span class="text-xs text-text-secondary bg-surface-light px-2 py-1 rounded">pt-BR</span>
+                    <button id="themeToggle" class="p-2 rounded-lg bg-surface-light hover:bg-surface transition-smooth">
+                        <svg id="darkIcon" class="w-5 h-5 text-text-secondary" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                        </svg>
+                        <svg id="lightIcon" class="w-5 h-5 text-text-secondary hidden" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2v2m0 16v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M2 12h2m16 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Page Title -->
+        <div class="mb-8">
+            <h2 class="text-3xl font-bold text-text-primary mb-2">Exportar e Gerenciar Dados</h2>
+            <p class="text-text-secondary">Organize, personalize e exporte seus dados de comparação de preços</p>
+        </div>
+
+        <!-- Main Grid Layout -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Export Configuration Panel -->
+            <div class="lg:col-span-2 space-y-6">
+                <!-- Data Preview Section -->
+                <div class="card p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-semibold text-text-primary">Visualização dos Dados</h3>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-sm text-text-secondary">Total:</span>
+                            <span id="totalRecords" class="text-sm font-medium text-primary">247 registros</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Data Table Preview -->
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr class="border-b border-border">
+                                    <th class="text-left py-3 px-2 font-medium text-text-secondary">Nome do Produto</th>
+                                    <th class="text-left py-3 px-2 font-medium text-text-secondary">Preço</th>
+                                    <th class="text-left py-3 px-2 font-medium text-text-secondary">Supermercado</th>
+                                    <th class="text-left py-3 px-2 font-medium text-text-secondary">Data de Coleta</th>
+                                </tr>
+                            </thead>
+                            <tbody id="dataPreview">
+                                <tr class="border-b border-border hover:bg-surface-light transition-smooth">
+                                    <td class="py-3 px-2 text-text-primary">Arroz branco 5kg</td>
+                                    <td class="py-3 px-2 text-success font-medium">R$ 18,90</td>
+                                    <td class="py-3 px-2 text-text-secondary">Carrefour</td>
+                                    <td class="py-3 px-2 text-text-secondary">15/01/2025</td>
+                                </tr>
+                                <tr class="border-b border-border hover:bg-surface-light transition-smooth">
+                                    <td class="py-3 px-2 text-text-primary">Feijão preto 1kg</td>
+                                    <td class="py-3 px-2 text-success font-medium">R$ 7,45</td>
+                                    <td class="py-3 px-2 text-text-secondary">Atacadão</td>
+                                    <td class="py-3 px-2 text-text-secondary">15/01/2025</td>
+                                </tr>
+                                <tr class="border-b border-border hover:bg-surface-light transition-smooth">
+                                    <td class="py-3 px-2 text-text-primary">Óleo de soja 900ml</td>
+                                    <td class="py-3 px-2 text-success font-medium">R$ 4,89</td>
+                                    <td class="py-3 px-2 text-text-secondary">Pão de Açúcar</td>
+                                    <td class="py-3 px-2 text-text-secondary">15/01/2025</td>
+                                </tr>
+                                <tr class="border-b border-border hover:bg-surface-light transition-smooth">
+                                    <td class="py-3 px-2 text-text-primary">Açúcar cristal 1kg</td>
+                                    <td class="py-3 px-2 text-success font-medium">R$ 3,25</td>
+                                    <td class="py-3 px-2 text-text-secondary">Carrefour</td>
+                                    <td class="py-3 px-2 text-text-secondary">15/01/2025</td>
+                                </tr>
+                                <tr class="hover:bg-surface-light transition-smooth">
+                                    <td class="py-3 px-2 text-text-primary">Sal refinado 1kg</td>
+                                    <td class="py-3 px-2 text-success font-medium">R$ 1,89</td>
+                                    <td class="py-3 px-2 text-text-secondary">Atacadão</td>
+                                    <td class="py-3 px-2 text-text-secondary">15/01/2025</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="mt-4 text-center">
+                        <button id="loadMorePreview" class="text-sm text-primary hover:text-primary-700 transition-smooth">
+                            Ver mais registros...
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Export Filters -->
+                <div class="card p-6">
+                    <h3 class="text-lg font-semibold text-text-primary mb-4">Filtros de Exportação</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Store Selection -->
+                        <div>
+                            <label class="block text-sm font-medium text-text-secondary mb-3">Supermercados</label>
+                            <div class="space-y-2">
+                                <label class="flex items-center">
+                                    <input type="checkbox" id="carrefour" class="rounded border-border text-primary focus:ring-primary focus:ring-offset-0" checked />
+                                    <span class="ml-2 text-sm text-text-primary">Carrefour</span>
+                                    <span class="ml-auto text-xs text-text-secondary">89 produtos</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" id="paodeacucar" class="rounded border-border text-primary focus:ring-primary focus:ring-offset-0" checked />
+                                    <span class="ml-2 text-sm text-text-primary">Pão de Açúcar</span>
+                                    <span class="ml-auto text-xs text-text-secondary">76 produtos</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" id="atacadao" class="rounded border-border text-primary focus:ring-primary focus:ring-offset-0" checked />
+                                    <span class="ml-2 text-sm text-text-primary">Atacadão</span>
+                                    <span class="ml-auto text-xs text-text-secondary">82 produtos</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" id="extra" class="rounded border-border text-primary focus:ring-primary focus:ring-offset-0" />
+                                    <span class="ml-2 text-sm text-text-primary">Extra</span>
+                                    <span class="ml-auto text-xs text-text-secondary">0 produtos</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Date Range -->
+                        <div>
+                            <label class="block text-sm font-medium text-text-secondary mb-3">Período</label>
+                            <div class="space-y-3">
+                                <div>
+                                    <label class="block text-xs text-text-secondary mb-1">Data Inicial</label>
+                                    <input type="date" id="startDate" class="input text-sm" value="2025-01-15" />
+                                </div>
+                                <div>
+                                    <label class="block text-xs text-text-secondary mb-1">Data Final</label>
+                                    <input type="date" id="endDate" class="input text-sm" value="2025-01-15" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product Categories -->
+                    <div class="mt-6">
+                        <label class="block text-sm font-medium text-text-secondary mb-3">Categorias de Produtos</label>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                            <label class="flex items-center">
+                                <input type="checkbox" class="rounded border-border text-primary focus:ring-primary focus:ring-offset-0" checked />
+                                <span class="ml-2 text-sm text-text-primary">Grãos</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="rounded border-border text-primary focus:ring-primary focus:ring-offset-0" checked />
+                                <span class="ml-2 text-sm text-text-primary">Carnes</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="rounded border-border text-primary focus:ring-primary focus:ring-offset-0" checked />
+                                <span class="ml-2 text-sm text-text-primary">Laticínios</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="rounded border-border text-primary focus:ring-primary focus:ring-offset-0" checked />
+                                <span class="ml-2 text-sm text-text-primary">Hortifruti</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="rounded border-border text-primary focus:ring-primary focus:ring-offset-0" checked />
+                                <span class="ml-2 text-sm text-text-primary">Óleos</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="rounded border-border text-primary focus:ring-primary focus:ring-offset-0" checked />
+                                <span class="ml-2 text-sm text-text-primary">Bebidas</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="rounded border-border text-primary focus:ring-primary focus:ring-offset-0" checked />
+                                <span class="ml-2 text-sm text-text-primary">Padaria</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="rounded border-border text-primary focus:ring-primary focus:ring-offset-0" checked />
+                                <span class="ml-2 text-sm text-text-primary">Outros</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Advanced Options -->
+                <div class="card p-6">
+                    <h3 class="text-lg font-semibold text-text-primary mb-4">Opções Avançadas</h3>
+                    
+                    <div class="space-y-4">
+                        <!-- Sorting Options -->
+                        <div>
+                            <label class="block text-sm font-medium text-text-secondary mb-2">Ordenação dos Dados</label>
+                            <select id="sortOption" class="input">
+                                <option value="product-asc">Nome do Produto (A-Z)</option>
+                                <option value="product-desc">Nome do Produto (Z-A)</option>
+                                <option value="price-asc">Preço (Menor para Maior)</option>
+                                <option value="price-desc" selected>Preço (Maior para Menor)</option>
+                                <option value="store-asc">Supermercado (A-Z)</option>
+                                <option value="date-desc">Data (Mais Recente)</option>
+                            </select>
+                        </div>
+
+                        <!-- Additional Metadata -->
+                        <div>
+                            <label class="block text-sm font-medium text-text-secondary mb-2">Metadados Adicionais</label>
+                            <div class="space-y-2">
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="rounded border-border text-primary focus:ring-primary focus:ring-offset-0" checked />
+                                    <span class="ml-2 text-sm text-text-primary">Incluir URL da Página</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="rounded border-border text-primary focus:ring-primary focus:ring-offset-0" />
+                                    <span class="ml-2 text-sm text-text-primary">Incluir Horário de Coleta</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="rounded border-border text-primary focus:ring-primary focus:ring-offset-0" />
+                                    <span class="ml-2 text-sm text-text-primary">Incluir Categoria do Produto</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="rounded border-border text-primary focus:ring-primary focus:ring-offset-0" />
+                                    <span class="ml-2 text-sm text-text-primary">Incluir Estatísticas de Preço</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Export Actions Panel -->
+            <div class="space-y-6">
+                <!-- File Configuration -->
+                <div class="card p-6">
+                    <h3 class="text-lg font-semibold text-text-primary mb-4">Configuração do Arquivo</h3>
+                    
+                    <div class="space-y-4">
+                        <!-- Filename Preview -->
+                        <div>
+                            <label class="block text-sm font-medium text-text-secondary mb-2">Nome do Arquivo</label>
+                            <div class="relative">
+                                <input type="text" id="filename" class="input pr-12" value="precos-15-01-2025" placeholder="precos-DD-MM-YYYY" />
+                                <span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-sm text-text-secondary">.csv</span>
+                            </div>
+                            <p class="text-xs text-text-secondary mt-1">O arquivo será salvo como CSV com codificação UTF-8</p>
+                        </div>
+
+                        <!-- File Format Options -->
+                        <div>
+                            <label class="block text-sm font-medium text-text-secondary mb-2">Formato</label>
+                            <div class="space-y-2">
+                                <label class="flex items-center">
+                                    <input type="radio" name="format" value="csv" class="text-primary focus:ring-primary focus:ring-offset-0" checked />
+                                    <span class="ml-2 text-sm text-text-primary">CSV (Recomendado)</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="radio" name="format" value="excel" class="text-primary focus:ring-primary focus:ring-offset-0" />
+                                    <span class="ml-2 text-sm text-text-primary">Excel (.xlsx)</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="radio" name="format" value="json" class="text-primary focus:ring-primary focus:ring-offset-0" />
+                                    <span class="ml-2 text-sm text-text-primary">JSON</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Export Actions -->
+                <div class="card p-6">
+                    <h3 class="text-lg font-semibold text-text-primary mb-4">Ações de Exportação</h3>
+                    
+                    <div class="space-y-3">
+                        <!-- Primary Export Button -->
+                        <button id="exportData" class="btn-primary w-full h-12 text-base font-semibold relative overflow-hidden">
+                            <span id="exportText" class="flex items-center justify-center">
+                                <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/>
+                                    <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/>
+                                </svg>
+                                Exportar Dados
+                            </span>
+                            <div id="exportSpinner" class="hidden absolute inset-0 flex items-center justify-center">
+                                <div class="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                                <span class="ml-2">Gerando arquivo...</span>
+                            </div>
+                        </button>
+
+                        <!-- Secondary Actions -->
+                        <div class="grid grid-cols-2 gap-3">
+                            <button id="previewExport" class="btn-outline h-10 text-sm">
+                                <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+                                </svg>
+                                Visualizar
+                            </button>
+                            <button id="shareExport" class="btn-outline h-10 text-sm">
+                                <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.50-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/>
+                                </svg>
+                                Compartilhar
+                            </button>
+                        </div>
+
+                        <!-- Progress Bar -->
+                        <div id="exportProgress" class="hidden">
+                            <div class="flex items-center justify-between text-sm text-text-secondary mb-2">
+                                <span>Processando dados...</span>
+                                <span id="progressPercent">0%</span>
+                            </div>
+                            <div class="w-full bg-surface-light rounded-full h-2">
+                                <div id="progressBar" class="bg-primary h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Local Storage Management -->
+                <div class="card p-6">
+                    <h3 class="text-lg font-semibold text-text-primary mb-4">Gerenciamento Local</h3>
+                    
+                    <div class="space-y-4">
+                        <!-- Saved Lists -->
+                        <div>
+                            <label class="block text-sm font-medium text-text-secondary mb-2">Listas Salvas</label>
+                            <div class="space-y-2">
+                                <div class="flex items-center justify-between p-2 bg-surface-light rounded">
+                                    <span class="text-sm text-text-primary">Lista Básica (25 produtos)</span>
+                                    <button class="text-xs text-primary hover:text-primary-700">Carregar</button>
+                                </div>
+                                <div class="flex items-center justify-between p-2 bg-surface-light rounded">
+                                    <span class="text-sm text-text-primary">Lista Carnes (8 produtos)</span>
+                                    <button class="text-xs text-primary hover:text-primary-700">Carregar</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Storage Actions -->
+                        <div class="space-y-2">
+                            <button id="saveCurrentList" class="btn-outline w-full h-10 text-sm">
+                                <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/>
+                                </svg>
+                                Salvar Lista Atual
+                            </button>
+                            <button id="clearStorage" class="btn-outline w-full h-10 text-sm text-error hover:bg-error hover:text-white">
+                                <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+                                </svg>
+                                Limpar Armazenamento
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Export Statistics -->
+                <div class="card p-6">
+                    <h3 class="text-lg font-semibold text-text-primary mb-4">Estatísticas</h3>
+                    
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-text-secondary">Registros selecionados:</span>
+                            <span id="selectedRecords" class="text-sm font-medium text-text-primary">247</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-text-secondary">Tamanho estimado:</span>
+                            <span class="text-sm font-medium text-text-primary">~45 KB</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-text-secondary">Última exportação:</span>
+                            <span class="text-sm font-medium text-text-primary">14/01/2025</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-text-secondary">Total de exportações:</span>
+                            <span class="text-sm font-medium text-text-primary">12</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Mobile Navigation -->
+    <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-surface border-t border-border z-50">
+        <div class="flex items-center justify-around py-2">
+            <a href="price_comparison_dashboard.html" class="flex flex-col items-center p-2 text-text-secondary">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
+                </svg>
+                <span class="text-xs mt-1">Dashboard</span>
+            </a>
+            <a href="results_display_interface.html" class="flex flex-col items-center p-2 text-text-secondary">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/>
+                </svg>
+                <span class="text-xs mt-1">Resultados</span>
+            </a>
+            <a href="export_and_data_management.html" class="flex flex-col items-center p-2 text-primary">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/>
+                    <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/>
+                </svg>
+                <span class="text-xs mt-1">Exportar</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="card p-6 m-4 max-w-md w-full">
+            <div class="text-center">
+                <div class="w-16 h-16 bg-success-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-8 h-8 text-success" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                    </svg>
+                </div>
+                <h3 class="text-lg font-semibold text-text-primary mb-2">Exportação Concluída!</h3>
+                <p class="text-text-secondary mb-4">Seu arquivo foi gerado e baixado com sucesso.</p>
+                <button id="closeSuccessModal" class="btn-primary">
+                    Fechar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Theme Toggle Functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const darkIcon = document.getElementById('darkIcon');
+        const lightIcon = document.getElementById('lightIcon');
+        
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+            darkIcon.classList.toggle('hidden');
+            lightIcon.classList.toggle('hidden');
+        });
+
+        // Filter Updates
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        const totalRecords = document.getElementById('totalRecords');
+        const selectedRecords = document.getElementById('selectedRecords');
+
+        function updateRecordCount() {
+            let count = 247; // Base count
+            const storeCheckboxes = [
+                document.getElementById('carrefour'),
+                document.getElementById('paodeacucar'),
+                document.getElementById('atacadao'),
+                document.getElementById('extra')
+            ];
+            
+            const checkedStores = storeCheckboxes.filter(cb => cb.checked).length;
+            if (checkedStores === 0) count = 0;
+            else if (checkedStores < 4) count = Math.floor(count * (checkedStores / 3));
+            
+            totalRecords.textContent = `${count} registros`;
+            selectedRecords.textContent = count.toString();
+        }
+
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', updateRecordCount);
+        });
+
+        // Filename Update
+        const filenameInput = document.getElementById('filename');
+        const today = new Date();
+        const defaultFilename = `precos-${today.getDate().toString().padStart(2, '0')}-${(today.getMonth() + 1).toString().padStart(2, '0')}-${today.getFullYear()}`;
+        filenameInput.value = defaultFilename;
+
+        // Export Functionality
+        const exportButton = document.getElementById('exportData');
+        const exportText = document.getElementById('exportText');
+        const exportSpinner = document.getElementById('exportSpinner');
+        const exportProgress = document.getElementById('exportProgress');
+        const progressBar = document.getElementById('progressBar');
+        const progressPercent = document.getElementById('progressPercent');
+        const successModal = document.getElementById('successModal');
+
+        exportButton.addEventListener('click', async () => {
+            // Show loading state
+            exportText.classList.add('hidden');
+            exportSpinner.classList.remove('hidden');
+            exportButton.disabled = true;
+            exportProgress.classList.remove('hidden');
+
+            // Simulate progress
+            const progressSteps = [20, 40, 60, 80, 100];
+            const progressLabels = [
+                'Filtrando dados...',
+                'Organizando registros...',
+                'Formatando arquivo...',
+                'Aplicando configurações...',
+                'Finalizando exportação...'
+            ];
+
+            for (let i = 0; i < progressSteps.length; i++) {
+                await new Promise(resolve => setTimeout(resolve, 800));
+                progressBar.style.width = `${progressSteps[i]}%`;
+                progressPercent.textContent = `${progressSteps[i]}%`;
+                document.querySelector('#exportProgress span').textContent = progressLabels[i];
+            }
+
+            // Generate and download CSV
+            const filename = filenameInput.value || defaultFilename;
+            const csvContent = generateCSV();
+            downloadCSV(csvContent, `${filename}.csv`);
+
+            // Reset UI
+            exportText.classList.remove('hidden');
+            exportSpinner.classList.add('hidden');
+            exportButton.disabled = false;
+            exportProgress.classList.add('hidden');
+            
+            // Show success modal
+            successModal.classList.remove('hidden');
+        });
+
+        function generateCSV() {
+            const headers = ['Nome do Produto', 'Preço', 'Nome do Supermercado', 'URL da Página', 'Data de Coleta'];
+            const data = [
+                ['Arroz branco 5kg', 'R$ 18,90', 'Carrefour', 'https://www.carrefour.com.br/produto/123', '15/01/2025'],
+                ['Feijão preto 1kg', 'R$ 7,45', 'Atacadão', 'https://www.atacadao.com.br/produto/456', '15/01/2025'],
+                ['Óleo de soja 900ml', 'R$ 4,89', 'Pão de Açúcar', 'https://www.paodeacucar.com/produto/789', '15/01/2025'],
+                ['Açúcar cristal 1kg', 'R$ 3,25', 'Carrefour', 'https://www.carrefour.com.br/produto/321', '15/01/2025'],
+                ['Sal refinado 1kg', 'R$ 1,89', 'Atacadão', 'https://www.atacadao.com.br/produto/654', '15/01/2025']
+            ];
+
+            let csv = headers.join(',') + '\n';
+            data.forEach(row => {
+                csv += row.map(field => `"${field}"`).join(',') + '\n';
+            });
+
+            return csv;
+        }
+
+        function downloadCSV(content, filename) {
+            const blob = new Blob([content], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download', filename);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // Modal Controls
+        document.getElementById('closeSuccessModal').addEventListener('click', () => {
+            successModal.classList.add('hidden');
+        });
+
+        // Preview Export
+        document.getElementById('previewExport').addEventListener('click', () => {
+            // Open preview in new tab/window
+            const csvContent = generateCSV();
+            const blob = new Blob([csvContent], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            window.open(url, '_blank');
+        });
+
+        // Share Export
+        document.getElementById('shareExport').addEventListener('click', () => {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Comparação de Preços',
+                    text: 'Confira os preços que encontrei nos supermercados!',
+                    url: window.location.href
+                });
+            } else {
+                // Fallback: copy to clipboard
+                navigator.clipboard.writeText(window.location.href);
+                alert('Link copiado para a área de transferência!');
+            }
+        });
+
+        // Storage Management
+        document.getElementById('saveCurrentList').addEventListener('click', () => {
+            const listName = prompt('Nome da lista:');
+            if (listName) {
+                // Save to localStorage (mock)
+                alert(`Lista "${listName}" salva com sucesso!`);
+            }
+        });
+
+        document.getElementById('clearStorage').addEventListener('click', () => {
+            if (confirm('Tem certeza que deseja limpar todo o armazenamento local?')) {
+                localStorage.clear();
+                alert('Armazenamento local limpo!');
+            }
+        });
+
+        // Load More Preview
+        document.getElementById('loadMorePreview').addEventListener('click', () => {
+            const tbody = document.getElementById('dataPreview');
+            const moreRows = [
+                ['Farinha de trigo 1kg', 'R$ 4,15', 'Pão de Açúcar', '15/01/2025'],
+                ['Macarrão espaguete 500g', 'R$ 2,89', 'Carrefour', '15/01/2025'],
+                ['Leite integral 1L', 'R$ 4,25', 'Atacadão', '15/01/2025']
+            ];
+
+            moreRows.forEach(rowData => {
+                const row = document.createElement('tr');
+                row.className = 'border-b border-border hover:bg-surface-light transition-smooth';
+                row.innerHTML = `
+                    <td class="py-3 px-2 text-text-primary">${rowData[0]}</td>
+                    <td class="py-3 px-2 text-success font-medium">${rowData[1]}</td>
+                    <td class="py-3 px-2 text-text-secondary">${rowData[2]}</td>
+                    <td class="py-3 px-2 text-text-secondary">${rowData[3]}</td>
+                `;
+                tbody.appendChild(row);
+            });
+
+            document.getElementById('loadMorePreview').style.display = 'none';
+        });
+
+        // Initialize
+        updateRecordCount();
+    </script>
+</body>
+</html>
